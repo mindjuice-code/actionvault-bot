@@ -167,4 +167,10 @@ app.get("/", (req, res) => {
 
 // Start server
 const PORT = process.env.PORT || 3000;
+// Manual trigger for Halloween broadcast
+app.get("/send-halloween", async (req, res) => {
+  await broadcastMessage(halloweenMessage);
+  res.send("🎃 Halloween promotion broadcast sent!");
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
