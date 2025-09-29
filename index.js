@@ -17,6 +17,25 @@ async function replyMessage(replyToken, messages) {
   );
 }
 
+// Helper: Broadcast message to all users
+async function broadcastMessage(messages) {
+  try {
+    await axios.post(
+      "https://api.line.me/v2/bot/message/broadcast",
+      { messages },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${CHANNEL_ACCESS_TOKEN}`
+        }
+      }
+    );
+    console.log("✅ Broadcast sent successfully");
+  } catch (err) {
+    console.error("❌ Broadcast failed:", err.response?.data || err.message);
+  }
+}
+
 // Collections with latest arrivals first
 const collections = {
   marvel: [
@@ -62,6 +81,20 @@ const collections = {
     }
   ]
 };
+
+const halloweenMessage = [
+  {
+    type: "text",
+    text: "🎃 Spooky Halloween Promotion! 👻\n\nFrom 15/10/25 to 31/10/25, enjoy frighteningly good deals on your favorite action figures!",
+    quickReply: {
+      items: [
+        { type: "action", action: { type: "message", label: "Marvel Deals", text: "marvel" } },
+        { type: "action", action: { type: "message", label: "Transformers Deals", text: "transformers" } },
+        { type: "action", action: { type: "message", label: "Anime Deals", text: "anime" } }
+      ]
+    }
+  }
+];
 
 // Webhook endpoint
 app.post("/webhook", async (req, res) => {
