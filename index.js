@@ -85,7 +85,9 @@ const collections = {
 const halloweenMessage = [
   {
     type: "text",
-    text: "🎃 Spooky Halloween Promotion! 👻\n\nFrom 15/10/25 to 31/10/25, enjoy frighteningly good deals on your favorite action figures!",
+    text: "🎃 Halloween Fun is Here! 👻
+From 15–31 Oct 2025, ActionVault has awesome spooky deals on your favorite figures! 🕸️
+✨ Don’t miss out—share with your friends and join the fun! 🦇",
     quickReply: {
       items: [
         { type: "action", action: { type: "message", label: "Marvel Deals", text: "marvel" } },
