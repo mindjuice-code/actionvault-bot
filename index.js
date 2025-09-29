@@ -74,7 +74,7 @@ const collections = {
       actions: [{ type: "uri", label: "Buy Now", uri: "https://www.threezerohk.com/product/naruto-uzumaki/" }]
     },
     {
-      thumbnailImageUrl: "https://www.hobbymodel.net/web/board/2025/uez1ifsk05uggakibimr119202510331393504.jpeg",
+      thumbnailImageUrl: "https://hobby-bee.com/cdn/shop/products/Naruto_Uzumaki_withlogo_06-1-768x1152_grande.jpg?v=1639974642",
       title: "Nezuko Kamado",
       text: "Nezuko Kamado Figure",
       actions: [{ type: "uri", label: "Buy Now", uri: "https://www.threezerohk.com/product/nezuko-kamado/" }]
