@@ -17,7 +17,7 @@ async function replyMessage(replyToken, messages) {
   );
 }
 
-// Carousel data
+// Collections with latest arrivals first
 const collections = {
   marvel: [
     {
@@ -36,13 +36,13 @@ const collections = {
   transformers: [
     {
       thumbnailImageUrl: "https://www.threezerohk.com/wp-content/uploads/2025/08/Transformers_DLX_Jazz_05-scaled.jpg",
-      title: "Nemesis Prime",
-      text: "DLX Jazz",
+      title: "DLX Jazz",
+      text: "DLX Jazz Figure",
       actions: [{ type: "uri", label: "Buy Now", uri: "https://www.threezerohk.com/product/transformersdlx-jazz-deluxe-edition/" }]
     },
     {
       thumbnailImageUrl: "https://ae01.alicdn.com/kf/Se0c417596089457a8d609f8b187b4ff9X.jpg_640x640q90.jpg",
-      title: "Optimus Prime",
+      title: "Nemesis Prime",
       text: "DLX Nemesis Prime",
       actions: [{ type: "uri", label: "Buy Now", uri: "https://www.threezerohk.com/product/nemesis-prime/" }]
     }
@@ -56,8 +56,8 @@ const collections = {
     },
     {
       thumbnailImageUrl: "https://www.hobbymodel.net/web/board/2025/uez1ifsk05uggakibimr119202510331393504.jpeg",
-      title: " Nezuko Kamado",
-      text: " Nezuko Kamado Figure",
+      title: "Nezuko Kamado",
+      text: "Nezuko Kamado Figure",
       actions: [{ type: "uri", label: "Buy Now", uri: "https://www.threezerohk.com/product/nezuko-kamado/" }]
     }
   ]
@@ -66,36 +66,70 @@ const collections = {
 // Webhook endpoint
 app.post("/webhook", async (req, res) => {
   const events = req.body.events || [];
+  
   for (let event of events) {
     const userMessage = (event.message?.text || "").toLowerCase();
 
+    // Step 1: Show category quick reply
     if (/find figures/i.test(userMessage)) {
       const messages = [
         {
           type: "text",
-          text: "Choose your favorite collection:",
+          text: "Choose your favorite category:",
           quickReply: {
-            items: Object.keys(collections).map(key => ({
-              type: "action",
-              action: { type: "message", label: key.charAt(0).toUpperCase() + key.slice(1), text: key }
-            }))
+            items: [
+              { type: "action", action: { type: "message", label: "Marvel", text: "marvel" } },
+              { type: "action", action: { type: "message", label: "Transformers", text: "transformers" } },
+              { type: "action", action: { type: "message", label: "Anime", text: "anime" } },
+              { type: "action", action: { type: "message", label: "Daily Recommendation", text: "daily" } }
+            ]
           }
         }
       ];
       await replyMessage(event.replyToken, messages);
 
+    // Step 2: Show latest arrivals in selected category
     } else if (collections[userMessage]) {
       const messages = [
         {
           type: "template",
-          altText: `${userMessage.charAt(0).toUpperCase() + userMessage.slice(1)} Figures`,
+          altText: `${userMessage.charAt(0).toUpperCase() + userMessage.slice(1)} Latest Arrivals`,
           template: { type: "carousel", columns: collections[userMessage] }
+        }
+      ];
+      await replyMessage(event.replyToken, messages);
+
+    // Step 3: Daily Recommendation (random figure)
+    } else if (userMessage === "daily") {
+      const allFigures = [].concat(...Object.values(collections));
+      const randomFigure = allFigures[Math.floor(Math.random() * allFigures.length)];
+      const messages = [
+        {
+          type: "template",
+          altText: "Daily Figure Recommendation",
+          template: {
+            type: "carousel",
+            columns: [
+              {
+                thumbnailImageUrl: randomFigure.thumbnailImageUrl,
+                title: randomFigure.title,
+                text: randomFigure.text,
+                actions: randomFigure.actions
+              }
+            ]
+          }
         }
       ];
       await replyMessage(event.replyToken, messages);
     }
   }
+
   res.sendStatus(200);
+});
+
+// Optional: show status on root
+app.get("/", (req, res) => {
+  res.send("ActionVault Bot is running!");
 });
 
 // Start server
