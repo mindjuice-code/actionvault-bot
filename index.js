@@ -68,7 +68,7 @@ const collections = {
   ],
   anime: [
     {
-      thumbnailImageUrl: "https://images.bigbadtoystore.com/images/p/full/2021/12/009954b2-4988-4125-a964-fa0d9c3e9246.jpg",
+      thumbnailImageUrl: "https://images.bigbadtoystore.com/images/p/full/2021/12/e1c581e6-deff-420b-aecf-4e8880ecaa2d.jpg",
       title: "Naruto",
       text: "Naruto Uzumaki Figure",
       actions: [{ type: "uri", label: "Buy Now", uri: "https://www.threezerohk.com/product/naruto-uzumaki/" }]
